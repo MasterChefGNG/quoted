@@ -1,0 +1,10 @@
+{
+  "versionCode": 2,
+  "versionName": "1.1.0",
+  "date": "23 November 2026",
+  "notes": [
+    "quoted now checks for updates when you open it. When there's a new version you'll see it here, and one tap downloads it. Your progress is kept.",
+    "Settings shows which version you have, with a button to check for updates."
+  ],
+  "apkUrl": "https://github.com/MasterChefGNG/quoted/releases/download/android-v1.1.0/quoted.apk"
+}
