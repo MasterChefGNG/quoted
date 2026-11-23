@@ -47,5 +47,6 @@ stops Safari from clearing the saved progress after a week of not visiting.
 
 ## History
 
-**2026-11-23**: Built and tested in phone-sized Chrome (every screen, a reload keeps progress, works offline).
+**2026-11-23**: Published on GitHub Pages: https://masterchefgng.github.io/quoted/ (repo `MasterChefGNG/quoted`).
+To update it: commit, then `git push`; Pages redeploys in about a minute. Built and tested in phone-sized Chrome (every screen, a reload keeps progress, works offline).
 Not yet tried on a real iPhone.
