@@ -57,6 +57,10 @@ does that by default). The version line and notes come from `android/latest.json
 
 ## History
 
+**2026-11-23 (end of day)**: The user confirmed it all works. Live now: the web app with auto-reload on update
+and a once-per-update "Latest update" screen (mascot), plus the Android download page and update file
+(`android/`). Android source is in the private repo `MasterChefGNG/quoted-android`.
+
 **2026-11-23**: Published on GitHub Pages: https://masterchefgng.github.io/quoted/ (repo `MasterChefGNG/quoted`).
 To update it: commit, then `git push`; Pages redeploys in about a minute. Built and tested in phone-sized Chrome (every screen, a reload keeps progress, works offline).
 Not yet tried on a real iPhone.
