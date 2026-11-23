@@ -4,10 +4,10 @@ import { h, bigButton, mascot } from './ui.js';
 import * as store from './store.js';
 
 export const LATEST_UPDATE = {
-  id: '2026-11-23-learn-counter-fix',
+  id: '2026-11-23-dark-mode',
   date: '23 November 2026',
   notes: [
-    'Fixed a bug in Learn: tapping Hide more quickly could skip you on to the next quote, so the counter at the top (like 5 / 5) jumped ahead. A quick extra tap is now ignored.',
+    'Dark mode: turn it on in Settings, under Appearance.',
   ],
 };
 

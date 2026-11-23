@@ -5,6 +5,7 @@ import { vm } from './state.js';
 import { h, mascot, bigButton, card, chip, topBar, label, openDialog } from './ui.js';
 import { quoteText } from './test-screen.js';
 import { filterSections } from './home.js';
+import { isDark, setDark } from './theme.js';
 
 const GREAT = 0.9;
 const GOOD = 0.6;
@@ -67,6 +68,19 @@ export function quoteListScreen() {
   return h('div', { class: 'screen' }, topBar('All quotes', () => vm.go({ name: 'home' })), body);
 }
 
+/** The Dark mode on/off switch. */
+function darkModeSwitch() {
+  const row = h('button', { type: 'button', role: 'switch', class: 'switch-row', 'aria-checked': String(isDark()) },
+    h('span', { class: 'body', text: 'Dark mode' }),
+    h('span', { class: 'switch', 'aria-hidden': 'true' }));
+  row.addEventListener('click', () => {
+    const dark = row.getAttribute('aria-checked') !== 'true';
+    setDark(dark);
+    row.setAttribute('aria-checked', String(dark));
+  });
+  return row;
+}
+
 export function settingsScreen() {
   const confirmReset = () => openDialog({
     title: 'Reset progress?',
@@ -77,7 +91,9 @@ export function settingsScreen() {
   return h('div', { class: 'screen' },
     topBar('Settings', () => vm.go({ name: 'home' })),
     h('div', { class: 'list-scroll settings' },
-      h('h2', { class: 'card-title', text: 'Progress' }),
+      h('h2', { class: 'card-title', text: 'Appearance' }),
+      darkModeSwitch(),
+      h('h2', { class: 'card-title gap-top', text: 'Progress' }),
       h('p', { class: 'secondary', text: 'Clear your record on every quote and your day streak, and start again.' }),
       bigButton('Reset progress', confirmReset, { primary: false }),
       h('h2', { class: 'card-title gap-top', text: 'Your progress is saved on this device' }),

@@ -192,6 +192,37 @@ try {
   await page.waitForTimeout(400);
   assert.equal(await page.locator('.update-screen').count(), 0, 'notice only shows once');
 
+  // ----- Dark mode: switched on in Settings, kept after a reload, then switched back -----
+  await button('Settings').click();
+  await page.getByRole('switch', { name: 'Dark mode' }).click();
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
+  await shot('dark-settings');
+  await page.reload();
+  await page.waitForSelector('.brand');
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark', 'dark mode kept after reload');
+  await shot('dark-home');
+  await tapText('Fill in the blanks');
+  await button('5').click();
+  await button('START').click();
+  await page.waitForSelector('input.blank');
+  await page.locator('input.blank').first().fill('zzz');
+  await page.locator('input.blank').first().press('Enter');
+  for (const blank of await page.locator('input.blank').all()) if (await blank.isEditable()) await blank.press('Enter');
+  await page.waitForSelector('.feedback');
+  await shot('dark-feedback');
+  await button('Stop session').click();
+  await button('Stop').click();
+  await tapText('Learn quotes');
+  await button('START').click();
+  await button('HIDE MORE').click();
+  await page.locator('.gap').first().click();
+  await shot('dark-learn');
+  await page.goBack();
+  await page.waitForSelector('.brand');
+  await button('Settings').click();
+  await page.getByRole('switch', { name: 'Dark mode' }).click();
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), undefined, 'back to light');
+
   assert.deepEqual(errors, []);
   console.log(`E2E passed, ${n} screenshots in ${shots}`);
 } catch (error) {

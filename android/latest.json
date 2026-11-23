@@ -1,9 +1,11 @@
 {
-  "versionCode": 3,
-  "versionName": "1.1.1",
+  "versionCode": 4,
+  "versionName": "1.2.0",
   "date": "23 November 2026",
   "notes": [
-    "Fixed a bug in Learn: tapping Hide more quickly could skip you on to the next quote, so the counter at the top (like 5 / 5) jumped ahead. A quick extra tap is now ignored."
+    "Dark mode: turn it on in Settings, under Appearance.",
+    "Samsung phone? Turn off Auto Blocker first or the update gets blocked: open Settings, tap Security and privacy, tap Auto Blocker and turn it off. Then come back and tap Update. You can turn it back on afterwards.",
+    "From now on, these steps show on the update screen whenever there's an update."
   ],
-  "apkUrl": "https://github.com/MasterChefGNG/quoted/releases/download/android-v1.1.1/quoted.apk"
+  "apkUrl": "https://github.com/MasterChefGNG/quoted/releases/download/android-v1.2.0/quoted.apk"
 }

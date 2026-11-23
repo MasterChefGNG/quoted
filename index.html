@@ -16,6 +16,8 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="preload" href="fonts/nunito.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="styles.css">
+  <!-- Dark mode before the first paint, so it never flashes white (js/theme.js does the rest). -->
+  <script>try { if (localStorage.getItem('quoted.dark') === 'true') document.documentElement.dataset.theme = 'dark'; } catch (e) {}</script>
 </head>
 <body>
   <main id="app"></main>

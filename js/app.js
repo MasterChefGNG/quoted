@@ -7,6 +7,7 @@ import { learnScreen, learnDoneScreen } from './learn.js';
 import { summaryScreen, quoteListScreen, settingsScreen } from './other-screens.js';
 import { askToKeepStorage } from './store.js';
 import { shouldShowUpdate, showUpdateScreen } from './updates.js';
+import { isDark, applyTheme } from './theme.js';
 
 const root = document.getElementById('app');
 setOverlayRoot(document.getElementById('overlays'));
@@ -75,6 +76,7 @@ document.addEventListener('visibilitychange', () => {
 
 setRenderer(render);
 history.replaceState({ away: false }, '');
+applyTheme(isDark());
 render(vm.screen);
 if (shouldShowUpdate()) showUpdateScreen();
 askToKeepStorage();
