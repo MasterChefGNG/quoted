@@ -36,6 +36,8 @@ node test/e2e.mjs             # clicks through every screen on a phone-sized Chr
 | Look | `styles.css` |
 
 **After any change that's been put online, bump `VERSION` in `sw.js`**, or phones keep the old cached copy.
+With it bumped, an open app picks up the new version (on launch or when brought back to the front) and
+reloads itself, but only on Home: mid-session it waits until the user is back on Home. Progress is kept.
 
 ## Putting it online
 

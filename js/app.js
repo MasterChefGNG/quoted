@@ -10,6 +10,14 @@ import { askToKeepStorage } from './store.js';
 const root = document.getElementById('app');
 setOverlayRoot(document.getElementById('overlays'));
 
+/** Set once a new version of the app has taken over in the background (see the bottom of this file). */
+let updateReady = false;
+
+/** Reloads into the new version, but only on Home so a session in progress is never cut off. */
+function reloadIfUpdated() {
+  if (updateReady && vm.screen.name === 'home') location.reload();
+}
+
 function build(screen) {
   switch (screen.name) {
     case 'home': return homeScreen();
@@ -24,6 +32,10 @@ function build(screen) {
 }
 
 function render(screen) {
+  if (screen.name === 'home' && updateReady) {
+    reloadIfUpdated();
+    return;
+  }
   closeOverlays();
   root.replaceChildren(build(screen));
   // One history entry while away from Home, so the back gesture/button returns there (as on Android).
@@ -47,6 +59,10 @@ window.addEventListener('popstate', () => {
     return;
   }
   vm.screen = { name: 'home' };
+  if (updateReady) {
+    reloadIfUpdated();
+    return;
+  }
   closeOverlays();
   root.replaceChildren(homeScreen());
 });
@@ -61,6 +77,25 @@ history.replaceState({ away: false }, '');
 render(vm.screen);
 askToKeepStorage();
 
+// ---------- Offline support and updates ----------
+// A new version downloads in the background. Once it's ready the app reloads itself, but only on Home,
+// so nobody loses a half-typed answer: mid-session it waits until they're back on Home.
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-  navigator.serviceWorker.register('./sw.js').catch((error) => console.error('Offline support failed to start', error));
+  // On the very first visit the worker takes control once just to set up offline mode: not an update.
+  let controlled = navigator.serviceWorker.controller !== null;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!controlled) { controlled = true; return; }
+    if (updateReady) return;
+    updateReady = true;
+    reloadIfUpdated();
+  });
+  navigator.serviceWorker.register('./sw.js')
+    .then((registration) => {
+      // A home-screen app often resumes instead of relaunching, so check for updates on resume too.
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState !== 'visible') return;
+        registration.update().catch((error) => console.error('Update check failed', error));
+      });
+    })
+    .catch((error) => console.error('Offline support failed to start', error));
 }
