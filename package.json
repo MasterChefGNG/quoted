@@ -1,0 +1,13 @@
+{
+  "name": "quoted-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/domain.test.mjs",
+    "quotes": "node tools/build-quotes.mjs",
+    "serve": "node tools/serve.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.49.1"
+  }
+}
