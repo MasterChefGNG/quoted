@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Get quoted for Android</title>
+  <meta name="description" content="Download the quoted Hamlet quote tester for Android">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    /* This page scrolls normally, unlike the app, which fills the screen. */
+    body { height: auto; overflow: auto; }
+    .get { max-width: 560px; margin: 0 auto; padding: calc(24px + var(--safe-top)) var(--pad) calc(32px + var(--safe-bottom)); }
+    .get .hero-mascot { margin: 8px auto 20px; }
+    .get .hero + .secondary { margin-top: 8px; }
+    .get .big-button { text-decoration: none; margin-top: 28px; }
+    .steps { margin: 32px 0 0; padding: 0; list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 18px; }
+    .steps li { counter-increment: step; display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start; }
+    .steps li::before {
+      content: counter(step);
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--green-pale); color: var(--green-text);
+      display: grid; place-items: center; font-weight: 900;
+    }
+    .steps b { font-weight: 800; }
+    .note { margin-top: 28px; padding: 16px 18px; border-radius: 20px; background: var(--grey-chip); }
+    .get a.inline { color: var(--green); }
+    .whats-new { margin: 10px 0 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+  </style>
+</head>
+<body>
+  <main class="get">
+    <div class="hero-mascot"><img src="../icons/icon.svg" alt="" width="120" height="120" style="border-radius:50%"></div>
+    <h1 class="hero center">quoted for Android</h1>
+    <p class="secondary center" id="version">Hamlet quote tester for Leaving Cert English</p>
+
+    <a class="big-button raised primary" id="download"
+       href="https://github.com/MasterChefGNG/quoted/releases/latest/download/quoted.apk" download>
+      <span class="big-button-text">Download</span>
+    </a>
+
+    <ol class="steps">
+      <li><span class="body">Tap <b>Download</b>. If Chrome says the file might be harmful, tap <b>Download anyway</b>.</span></li>
+      <li><span class="body">Tap <b>Open</b> when it finishes (or find <b>quoted.apk</b> in your Downloads).</span></li>
+      <li><span class="body">If your phone says it can't install unknown apps, tap <b>Settings</b>, turn on <b>Allow from this source</b>, then go back.</span></li>
+      <li><span class="body">Tap <b>Install</b>. If Play Protect warns you, tap <b>More details</b>, then <b>Install anyway</b>. It warns about any app that isn't from the Play Store.</span></li>
+    </ol>
+
+    <div class="note">
+      <p class="body"><b>After that, it updates itself.</b> When there's a new version, quoted shows it when you open the app, and one tap gets it. Your progress is kept.</p>
+    </div>
+
+    <div class="note" id="news" hidden>
+      <p class="body"><b>New in this version</b></p>
+      <ul class="whats-new body" id="notes"></ul>
+    </div>
+
+    <p class="secondary center" style="margin-top:28px">On an iPhone? <a class="inline" href="../">Use the web version</a> instead.</p>
+  </main>
+  <script type="module">
+    // Shows the current version and its notes from the same file the app checks. The page works without it.
+    try {
+      const response = await fetch('latest.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const info = await response.json();
+      document.getElementById('version').textContent = `Version ${info.versionName} · ${info.date}`;
+      const notes = document.getElementById('notes');
+      for (const note of info.notes) {
+        const li = document.createElement('li');
+        li.textContent = note;
+        notes.append(li);
+      }
+      document.getElementById('news').hidden = info.notes.length === 0;
+    } catch (error) {
+      console.error('Could not load version info', error);
+    }
+  </script>
+</body>
+</html>

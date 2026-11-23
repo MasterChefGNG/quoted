@@ -48,6 +48,13 @@ Any static host works (GitHub Pages, Netlify, Cloudflare Pages): upload this fol
 On iPhone: open the link in Safari → Share → Add to Home Screen. Opening it from the home screen icon also
 stops Safari from clearing the saved progress after a week of not visiting.
 
+## Android download page
+
+`android/index.html` (live at https://masterchefgng.github.io/quoted/android/) is the link to send Android users.
+Its button uses GitHub's `releases/latest/download/quoted.apk`, so it always gives the newest release, as long
+as each release's APK asset is named `quoted.apk` and the newest release is marked "latest" (`gh release create`
+does that by default). The version line and notes come from `android/latest.json`.
+
 ## History
 
 **2026-11-23**: Published on GitHub Pages: https://masterchefgng.github.io/quoted/ (repo `MasterChefGNG/quoted`).
