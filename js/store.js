@@ -59,6 +59,21 @@ export function resetAll() {
   }
 }
 
+const UPDATE_SEEN_KEY = 'quoted.lastSeenUpdate';
+
+export const lastSeenUpdate = () => read(UPDATE_SEEN_KEY, null, (v) => typeof v === 'string');
+export const markUpdateSeen = (id) => write(UPDATE_SEEN_KEY, id);
+
+/** Any sign this browser had used the app before: saved progress, a streak, or a dismissed tip. */
+export function hasUsedAppBefore() {
+  try {
+    return [RECORDS_KEY, STREAK_KEY, INSTALL_HINT_KEY].some((key) => localStorage.getItem(key) !== null);
+  } catch (error) {
+    console.error('Could not check saved data', error);
+    return false;
+  }
+}
+
 export const installHintDismissed = () => read(INSTALL_HINT_KEY, false, (v) => typeof v === 'boolean');
 export const dismissInstallHint = () => write(INSTALL_HINT_KEY, true);
 

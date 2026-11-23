@@ -34,6 +34,7 @@ try {
   await page.goto(URL_ROOT);
   await page.waitForSelector('.brand');
   await shot('home');
+  assert.equal(await page.locator('.update-screen').count(), 0, 'no update notice for a brand-new user');
   assert.ok(await page.getByText('Add quoted to your home screen').isVisible(), 'install hint shows in the browser');
   await button('Got it').click();
 
@@ -173,7 +174,22 @@ try {
   await context.setOffline(true);
   await page.reload();
   await page.waitForSelector('.brand');
+  // The GIF is cached for offline too
+  assert.ok(await page.evaluate(() => caches.match('images/toothless.gif').then((r) => r !== undefined)), 'gif cached');
   await context.setOffline(false);
+
+  // ----- "Latest update" notice: shows once to an existing user after an update, then never again -----
+  await page.evaluate(() => localStorage.setItem('quoted.lastSeenUpdate', JSON.stringify('an-older-update')));
+  await page.reload();
+  await page.waitForSelector('.update-screen.open');
+  await page.waitForFunction(() => document.querySelector('.update-gif').complete);
+  await shot('update-notice');
+  await button('Got it').click();
+  await page.waitForSelector('.update-screen', { state: 'detached' });
+  await page.reload();
+  await page.waitForSelector('.brand');
+  await page.waitForTimeout(400);
+  assert.equal(await page.locator('.update-screen').count(), 0, 'notice only shows once');
 
   assert.deepEqual(errors, []);
   console.log(`E2E passed, ${n} screenshots in ${shots}`);
