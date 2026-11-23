@@ -25,22 +25,38 @@ export function shouldShowUpdate() {
 }
 
 /** Full-screen notice over the app, with the quoted mascot bobbing next to the heading. */
-// Added to <body> rather than the overlay layer, so redrawing a screen never removes it unseen.
-export function showUpdateScreen(parent = document.body) {
-  const close = () => {
+export function showUpdateScreen(onClosed = () => {}) {
+  showFullScreen('Latest update', LATEST_UPDATE.date, LATEST_UPDATE.notes, () => {
     store.markUpdateSeen(LATEST_UPDATE.id);
+    onClosed();
+  });
+}
+
+/** A notice shown every time the app opens, until it's taken out here. Empty for none. */
+export const NOTICE = [
+  'Because of the new Android rules in 2027, the Android app may be down for maintenance until February 2027.',
+];
+
+export function showNoticeScreen() {
+  if (NOTICE.length > 0) showFullScreen('Notice', '', NOTICE, () => {}, 'notice-screen');
+}
+
+// Added to <body> rather than the overlay layer, so redrawing a screen never removes it unseen.
+function showFullScreen(title, subtitle, notes, onClosed, cls = '') {
+  const close = () => {
     screen.classList.remove('open');
     setTimeout(() => screen.remove(), 220);
+    onClosed();
   };
-  const screen = h('div', { class: 'update-screen', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'update-title' },
+  const screen = h('div', { class: `update-screen ${cls}`, role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'update-title' },
     h('div', { class: 'update-body' },
       h('div', { class: 'update-head' },
         h('div', { class: 'update-mascot' }, mascot(84)),
         h('div', {},
-          h('h1', { class: 'title', id: 'update-title', text: 'Latest update' }),
-          h('p', { class: 'secondary', text: LATEST_UPDATE.date }))),
-      h('ul', { class: 'update-notes' }, LATEST_UPDATE.notes.map((note) => h('li', { class: 'body', text: note })))),
+          h('h1', { class: 'title', id: 'update-title', text: title }),
+          subtitle ? h('p', { class: 'secondary', text: subtitle }) : null)),
+      h('ul', { class: 'update-notes' }, notes.map((note) => h('li', { class: 'body', text: note })))),
     h('div', { class: 'bottom-bar' }, bigButton('Got it', close)));
-  parent.append(screen);
+  document.body.append(screen);
   requestAnimationFrame(() => screen.classList.add('open'));
 }

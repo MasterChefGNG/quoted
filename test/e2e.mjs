@@ -33,8 +33,18 @@ const tapText = (text) => page.getByText(text, { exact: true }).first().click();
 try {
   await page.goto(URL_ROOT);
   await page.waitForSelector('.brand');
+  // The maintenance notice shows on every open, new users included.
+  await page.waitForSelector('.notice-screen.open');
+  await shot('notice');
+  await page.locator('.notice-screen').getByRole('button', { name: /^Got it$/i }).click();
+  await page.waitForSelector('.notice-screen', { state: 'detached' });
+  // From here on, close it whenever a reload brings it back.
+  await page.addLocatorHandler(page.locator('.notice-screen.open'), async (notice) => {
+    await notice.getByRole('button', { name: /^Got it$/i }).click();
+    await notice.waitFor({ state: 'detached' });
+  });
   await shot('home');
-  assert.equal(await page.locator('.update-screen').count(), 0, 'no update notice for a brand-new user');
+  assert.equal(await page.locator('.update-screen:not(.notice-screen)').count(), 0, 'no update notice for a brand-new user');
   assert.ok(await page.getByText('Add quoted to your home screen').isVisible(), 'install hint shows in the browser');
   await button('Got it').click();
 
@@ -75,11 +85,11 @@ try {
   await button('Stop').click();
   await page.waitForSelector('.brand');
   await shot('home-with-weak');
-  const weakText = await page.locator('.bottom-bar .big-button').innerText();
+  const weakText = await page.locator('#app .bottom-bar .big-button').innerText();
   assert.match(weakText, /PRACTISE WEAK QUOTES/);
 
   // ----- Weak quotes, Type the full quote -----
-  await page.locator('.bottom-bar .big-button').click();
+  await page.locator('#app .bottom-bar .big-button').click();
   await shot('weak-mode-picker');
   await page.locator('.sheet').getByText('Type the full quote', { exact: true }).click();
   await page.waitForSelector('textarea.answer');
@@ -162,7 +172,7 @@ try {
   await button('RESET PROGRESS').click();
   await button('Reset').click();
   await page.waitForSelector('.brand');
-  assert.match(await page.locator('.bottom-bar .big-button').innerText(), /NO WEAK QUOTES/);
+  assert.match(await page.locator('#app .bottom-bar .big-button').innerText(), /NO WEAK QUOTES/);
 
   // ----- Progress survives a reload, and the app works offline -----
   await tapText('Flashcards');
@@ -172,7 +182,7 @@ try {
   await button('MISSED IT').click();
   await page.reload();
   await page.waitForSelector('.brand');
-  assert.match(await page.locator('.bottom-bar .big-button').innerText(), /PRACTISE WEAK QUOTES\s*1/);
+  assert.match(await page.locator('#app .bottom-bar .big-button').innerText(), /PRACTISE WEAK QUOTES\s*1/);
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
   await context.setOffline(true);
@@ -183,14 +193,14 @@ try {
   // ----- "Latest update" notice: shows once to an existing user after an update, then never again -----
   await page.evaluate(() => localStorage.setItem('quoted.lastSeenUpdate', JSON.stringify('an-older-update')));
   await page.reload();
-  await page.waitForSelector('.update-screen.open');
+  await page.waitForSelector('.update-screen:not(.notice-screen).open');
   await shot('update-notice');
-  await button('Got it').click();
-  await page.waitForSelector('.update-screen', { state: 'detached' });
+  await page.locator('.update-screen:not(.notice-screen)').getByRole('button', { name: /^Got it$/i }).click();
+  await page.waitForSelector('.update-screen:not(.notice-screen)', { state: 'detached' });
   await page.reload();
   await page.waitForSelector('.brand');
   await page.waitForTimeout(400);
-  assert.equal(await page.locator('.update-screen').count(), 0, 'notice only shows once');
+  assert.equal(await page.locator('.update-screen:not(.notice-screen)').count(), 0, 'update notes only show once');
 
   // ----- Dark mode: switched on in Settings, kept after a reload, then switched back -----
   await button('Settings').click();

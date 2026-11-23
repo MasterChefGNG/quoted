@@ -1,11 +1,12 @@
 {
-  "versionCode": 4,
-  "versionName": "1.2.0",
+  "versionCode": 5,
+  "versionName": "1.2.1",
   "date": "23 November 2026",
   "notes": [
-    "Dark mode: turn it on in Settings, under Appearance.",
-    "Samsung phone? Turn off Auto Blocker first or the update gets blocked: open Settings, tap Security and privacy, tap Auto Blocker and turn it off. Then come back and tap Update. You can turn it back on afterwards.",
-    "From now on, these steps show on the update screen whenever there's an update."
+    "Because of the new Android rules in 2027, the Android app may be down for maintenance until February 2027."
   ],
-  "apkUrl": "https://github.com/MasterChefGNG/quoted/releases/download/android-v1.2.0/quoted.apk"
+  "notice": [
+    "Because of the new Android rules in 2027, the Android app may be down for maintenance until February 2027."
+  ],
+  "apkUrl": "https://github.com/MasterChefGNG/quoted/releases/download/android-v1.2.1/quoted.apk"
 }

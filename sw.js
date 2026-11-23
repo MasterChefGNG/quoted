@@ -1,6 +1,6 @@
 // Offline support: every file the app needs is cached on first visit, so it works with no signal.
 // Bump VERSION whenever any file changes, so phones pick up the new version on their next open.
-const VERSION = 'quoted-v6';
+const VERSION = 'quoted-v7';
 const FILES = [
   './', 'index.html', 'styles.css', 'manifest.webmanifest', 'fonts/nunito.ttf',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
