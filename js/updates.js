@@ -1,6 +1,6 @@
 // The "Latest update" screen, shown once after each update.
 // To announce a new update: give LATEST_UPDATE a new `id` and new notes, and bump VERSION in sw.js.
-import { h, bigButton } from './ui.js';
+import { h, bigButton, mascot } from './ui.js';
 import * as store from './store.js';
 
 export const LATEST_UPDATE = {
@@ -25,7 +25,7 @@ export function shouldShowUpdate() {
   return true;
 }
 
-/** Full-screen notice over the app, with the dancing Toothless next to the heading. */
+/** Full-screen notice over the app, with the quoted mascot bobbing next to the heading. */
 // Added to <body> rather than the overlay layer, so redrawing a screen never removes it unseen.
 export function showUpdateScreen(parent = document.body) {
   const close = () => {
@@ -36,7 +36,7 @@ export function showUpdateScreen(parent = document.body) {
   const screen = h('div', { class: 'update-screen', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'update-title' },
     h('div', { class: 'update-body' },
       h('div', { class: 'update-head' },
-        h('img', { class: 'update-gif', src: 'images/toothless.gif', alt: 'Toothless dancing', width: '120', height: '120' }),
+        h('div', { class: 'update-mascot' }, mascot(84)),
         h('div', {},
           h('h1', { class: 'title', id: 'update-title', text: 'Latest update' }),
           h('p', { class: 'secondary', text: LATEST_UPDATE.date }))),

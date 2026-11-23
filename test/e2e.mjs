@@ -174,15 +174,12 @@ try {
   await context.setOffline(true);
   await page.reload();
   await page.waitForSelector('.brand');
-  // The GIF is cached for offline too
-  assert.ok(await page.evaluate(() => caches.match('images/toothless.gif').then((r) => r !== undefined)), 'gif cached');
   await context.setOffline(false);
 
   // ----- "Latest update" notice: shows once to an existing user after an update, then never again -----
   await page.evaluate(() => localStorage.setItem('quoted.lastSeenUpdate', JSON.stringify('an-older-update')));
   await page.reload();
   await page.waitForSelector('.update-screen.open');
-  await page.waitForFunction(() => document.querySelector('.update-gif').complete);
   await shot('update-notice');
   await button('Got it').click();
   await page.waitForSelector('.update-screen', { state: 'detached' });

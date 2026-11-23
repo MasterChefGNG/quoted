@@ -1,12 +1,11 @@
 // Offline support: every file the app needs is cached on first visit, so it works with no signal.
 // Bump VERSION whenever any file changes, so phones pick up the new version on their next open.
-const VERSION = 'quoted-v3';
+const VERSION = 'quoted-v4';
 const FILES = [
   './', 'index.html', 'styles.css', 'manifest.webmanifest', 'fonts/nunito.ttf',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
   'js/app.js', 'js/state.js', 'js/domain.js', 'js/quotes.js', 'js/store.js', 'js/ui.js',
   'js/home.js', 'js/test-screen.js', 'js/learn.js', 'js/other-screens.js', 'js/updates.js',
-  'images/toothless.gif',
 ];
 
 self.addEventListener('install', (event) => {

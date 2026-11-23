@@ -34,7 +34,7 @@ node test/e2e.mjs             # clicks through every screen on a phone-sized Chr
 | Saved progress | `js/store.js` (localStorage) |
 | Screens | `js/home.js`, `js/test-screen.js`, `js/learn.js`, `js/other-screens.js` |
 | Look | `styles.css` |
-| "Latest update" screen (with the dancing Toothless GIF) | `js/updates.js`: new `id` + notes each update. Shown once, only to people who used the app before |
+| "Latest update" screen (with the mascot) | `js/updates.js`: new `id` + notes each update. Shown once, only to people who used the app before |
 
 **After any change that's been put online, bump `VERSION` in `sw.js`**, or phones keep the old cached copy.
 With it bumped, an open app picks up the new version (on launch or when brought back to the front) and
