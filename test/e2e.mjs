@@ -125,10 +125,14 @@ try {
   await button('HIDE MORE').click();
   await shot('learn-step-1');
   while (await button('HIDE MORE').count()) await button('HIDE MORE').click();
+  // A quick extra tap where Hide more was must not skip on to the next quote.
+  await button('I KNOW IT').click();
+  assert.equal(await page.locator('.session-header .secondary').innerText(), '1 / 5', 'fast tap did not skip a quote');
   await page.locator('.gap').first().click();
   await shot('learn-all-hidden-peek');
   for (let i = 0; i < 5; i++) {
     while (await button('HIDE MORE').count()) await button('HIDE MORE').click();
+    await page.waitForTimeout(750);
     const next = (await button('FINISH').count()) ? 'FINISH' : 'I KNOW IT';
     await button(next).click();
   }

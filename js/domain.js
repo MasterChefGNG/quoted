@@ -300,6 +300,15 @@ export function hiddenAtStep(order, step) {
   return new Set(order.slice(0, count));
 }
 
+/**
+ * How long "I know it" ignores taps after it replaces "Hide more" in the same spot, so a quick
+ * extra tap on Hide more can't skip on to the next quote.
+ */
+export const NEXT_TAP_GUARD_MS = 700;
+
+/** Whether a tap at nowMs on a button that appeared at shownAtMs counts. */
+export const isTapAllowed = (nowMs, shownAtMs) => nowMs - shownAtMs >= NEXT_TAP_GUARD_MS;
+
 /** Learning order: quotes never tested come first, then the weakest, each group in quote order. */
 export function learnOrder(ids, records) {
   const rec = (id) => records[id] ?? emptyRecord();

@@ -323,3 +323,9 @@ test('starts with hints never give a short quote away', () => {
   assert.equal(d.startsWithHint(byId(1)), 'Starts with "O, most..."');
   assert.equal(d.startsWithHint(byId(23)), 'Starts with "\'Tis brief..."');
 });
+
+test('a quick extra tap right after I know it appears is ignored', () => {
+  assert.equal(d.isTapAllowed(1100, 1000), false);
+  assert.equal(d.isTapAllowed(1000 + d.NEXT_TAP_GUARD_MS - 1, 1000), false);
+  assert.equal(d.isTapAllowed(1000 + d.NEXT_TAP_GUARD_MS, 1000), true);
+});

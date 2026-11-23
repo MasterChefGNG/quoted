@@ -4,11 +4,10 @@ import { h, bigButton, mascot } from './ui.js';
 import * as store from './store.js';
 
 export const LATEST_UPDATE = {
-  id: '2026-11-23-update-notes',
+  id: '2026-11-23-learn-counter-fix',
   date: '23 November 2026',
   notes: [
-    'Updates now install by themselves. No need to do anything.',
-    'After each update you’ll see this screen once, so you know what’s new.',
+    'Fixed a bug in Learn: tapping Hide more quickly could skip you on to the next quote, so the counter at the top (like 5 / 5) jumped ahead. A quick extra tap is now ignored.',
   ],
 };
 

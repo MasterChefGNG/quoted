@@ -29,7 +29,14 @@ function fadeDrill(quote, isLast) {
   const bar = progressBar(0, { thin: true });
   const bottom = h('div', { class: 'learn-bottom' });
 
-  const goTo = (newStep) => { step = newStep; peeked = new Set(); draw(); };
+  let nextShownAt = 0;
+  const goTo = (newStep) => {
+    step = newStep;
+    peeked = new Set();
+    if (newStep === d.fadeSteps(order)) nextShownAt = performance.now();
+    draw();
+  };
+  const next = () => { if (d.isTapAllowed(performance.now(), nextShownAt)) vm.learnNext(); };
 
   function drawQuote(hidden) {
     const lines = [];
@@ -57,7 +64,7 @@ function fadeDrill(quote, isLast) {
     setProgress(bar, step / steps);
     bottom.replaceChildren(...(step < steps
       ? [bigButton('Hide more', () => goTo(step + 1)), smallLink('Show more words', () => goTo(step - 1), step > 0)]
-      : [bigButton(isLast ? 'Finish' : 'I know it', () => vm.learnNext()),
+      : [bigButton(isLast ? 'Finish' : 'I know it', next),
         smallLink('Go through it again', () => { order = vm.fadeOrderFor(quote); goTo(0); })]));
   }
   draw();
